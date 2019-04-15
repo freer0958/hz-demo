@@ -24,23 +24,24 @@
       @close="closeDialog"
     >
       <el-row style="minHeight:380px">
-        <template v-if="'add' == dialogMode">
+        <!-- <template v-if="'add' == dialogMode">
           <div style="marginBottom:5px" :key="index" v-for="(item,index) in curKeywordsList">
-            <SelectTree :treeData="keywordsList" @treeSelect="onTreeSelect($event,index)"/>
+            <SelectTree ref="selecttree" :treeData="keywordsList" @treeSelect="onTreeSelect($event,index)"/>
             <el-button size="mini" style="margin-left:10px" @click="onDelTreeSelect(index)">删除</el-button>
           </div>
         </template>
-        <template v-if="'edit' == dialogMode">
-          <div style="marginBottom:5px" :key="index" v-for="(item,index) in curKeywordsList">
-            <SelectTree
-              :treeData="keywordsList"
-              :id="item.elementId"
-              @treeSelect="onTreeSelect($event,index)"
-            />
-            <el-button size="mini" style="margin-left:10px" @click="onDelTreeSelect(index)">删除</el-button>
-          </div>
-          <el-button size="mini" v-if="addFlag" @click="onAddTreeSelect">新增词条</el-button>
-        </template>
+        <template v-if="'edit' == dialogMode">-->
+        <div style="marginBottom:5px" :key="index" v-for="(item,index) in curKeywordsList">
+          <SelectTree
+            ref="selecttree"
+            :treeData="keywordsList"
+            :id="item.elementId"
+            @treeSelect="onTreeSelect($event,index)"
+          />
+          <el-button size="mini" style="margin-left:10px" @click="onDelTreeSelect(index)">删除</el-button>
+        </div>
+        <el-button size="mini" v-if="addFlag" @click="onAddTreeSelect">新增词条</el-button>
+        <!-- </template> -->
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -104,7 +105,6 @@ export default {
           elementId: item
         };
       });
-      console.log(this.curKeywordsList);
       this.dialogMode = "edit";
       this.dialogIndex = index;
       this.dialogVisible = true;
@@ -127,7 +127,6 @@ export default {
               return item.elementId;
             })
         };
-        console.log(addObj);
         this.terminologyList = [...this.terminologyList, addObj];
       } else if ("edit" == this.dialogMode) {
         this.terminologyList[this.dialogIndex].keywords = this.curKeywordsList
@@ -149,12 +148,14 @@ export default {
       console.log(datax, index);
 
       if (index < this.curKeywordsList.length) {
-        // 判断选择的值是否重复
-        var checkList = this.curKeywordsList.filter(item => {
-          return datax.data.id == item.elementId;
-        });
-        console.log(checkList);
-        if (checkList.length > 0) {
+        // 需要排除自己
+        var isRepeat = false;
+        for(let i=0;i<this.curKeywordsList.length;i++){
+            if(i!=index && this.curKeywordsList[i].elementId ==datax.data.id){
+                isRepeat = true;
+            }
+        }
+        if (isRepeat) {
           //表示有重复
 
           this.$message({
@@ -162,7 +163,7 @@ export default {
             type: "warning"
           });
           this.curKeywordsList[index].elementId = "";
-
+          this.$refs.selecttree[index].forceUpdateOptions();
           if (index + 1 == this.curKeywordsList.length) {
             this.addFlag = false;
           }
