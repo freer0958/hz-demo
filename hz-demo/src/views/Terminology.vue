@@ -60,10 +60,12 @@ export default {
   },
   data() {
     return {
+      //本地模拟数据,实际应该从java接口获得
       terminologyList: [
         { _id: 0, name: "术语1", keywords: ["1", "2"] },
         { _id: 1, name: "术语2", keywords: ["1"] }
       ],
+      //本地模拟数据，实际应该从java接口获得
       keywordsList: [
         { id: "1", text: "词条1" },
         { id: "2", text: "词条2" },
@@ -160,7 +162,10 @@ export default {
             type: "warning"
           });
           this.curKeywordsList[index].elementId = "";
-          this.addFlag = false;
+
+          if (index + 1 == this.curKeywordsList.length) {
+            this.addFlag = false;
+          }
         } else {
           //没有重复
 
