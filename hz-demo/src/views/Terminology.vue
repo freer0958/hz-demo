@@ -84,7 +84,11 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
-        this.addFlag = true;
+        if ("edit" == this.dialogMode) {
+          this.addFlag = true;
+        } else {
+          this.addFlag = false;
+        }
       }
     }
   },
@@ -150,10 +154,13 @@ export default {
       if (index < this.curKeywordsList.length) {
         // 需要排除自己
         var isRepeat = false;
-        for(let i=0;i<this.curKeywordsList.length;i++){
-            if(i!=index && this.curKeywordsList[i].elementId ==datax.data.id){
-                isRepeat = true;
-            }
+        for (let i = 0; i < this.curKeywordsList.length; i++) {
+          if (
+            i != index &&
+            this.curKeywordsList[i].elementId == datax.data.id
+          ) {
+            isRepeat = true;
+          }
         }
         if (isRepeat) {
           //表示有重复
