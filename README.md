@@ -1,2 +1,2 @@
 # hz-demo
-hz demo
+haz-demo
