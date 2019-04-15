@@ -7,8 +7,9 @@
     </header>
     <div class="content">
       <ul>
-        <li style="margin:8px;" v-for="(item,index) in terminologyList" :key="item._id">
-          {{item.name}}
+        <li v-for="(item,index) in terminologyList" :key="item._id">
+          <span>{{`${index+1}. `}}</span>
+          <span>{{item.name}}</span>
           <span>
             <el-button size="mini" @click="onEdit(index)">编辑</el-button>
           </span>
@@ -24,13 +25,6 @@
       @close="closeDialog"
     >
       <el-row style="minHeight:380px">
-        <!-- <template v-if="'add' == dialogMode">
-          <div style="marginBottom:5px" :key="index" v-for="(item,index) in curKeywordsList">
-            <SelectTree ref="selecttree" :treeData="keywordsList" @treeSelect="onTreeSelect($event,index)"/>
-            <el-button size="mini" style="margin-left:10px" @click="onDelTreeSelect(index)">删除</el-button>
-          </div>
-        </template>
-        <template v-if="'edit' == dialogMode">-->
         <div style="marginBottom:5px" :key="index" v-for="(item,index) in curKeywordsList">
           <SelectTree
             ref="selecttree"
@@ -41,7 +35,6 @@
           <el-button size="mini" style="margin-left:10px" @click="onDelTreeSelect(index)">删除</el-button>
         </div>
         <el-button size="mini" v-if="addFlag" @click="onAddTreeSelect">新增词条</el-button>
-        <!-- </template> -->
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -164,7 +157,6 @@ export default {
         }
         if (isRepeat) {
           //表示有重复
-
           this.$message({
             message: "关键词重复，请重新选择!",
             type: "warning"
@@ -176,7 +168,6 @@ export default {
           }
         } else {
           //没有重复
-
           // 如果选择的是最后一个tree-select，则在下面添加一个新的tree-select
           if (index + 1 == this.curKeywordsList.length) {
             this.curKeywordsList = [...this.curKeywordsList, { elementId: "" }];
@@ -205,3 +196,23 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.terminology {
+  ul {
+    list-style: none;
+    height: 20px;
+    li {
+      height: 30px;
+      margin: 10px 0;
+      & > span:nth-child(1) {
+        display: inline-block;
+        width: 20px;
+      }
+      & > span:nth-child(2) {
+        display: inline-block;
+        width: 100px;
+      }
+    }
+  }
+}
+</style>
