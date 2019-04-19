@@ -20,10 +20,17 @@ export default new Router({
         {
             path: '/pagination',
             name: 'pagination',
-            // route level code-splitting
-            // this generates a separate chunk (about.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
             component: () => import(/* webpackChunkName: "pagination" */ './views/Pagination.vue')
+        },
+        {
+            path: '/tree',
+            name: 'tree',
+            component: () => import(/* webpackChunkName: "tree" */ './views/Tree.vue')
+        },
+        {
+            path: '/eltree',
+            name: 'eltree',
+            component: () => import(/* webpackChunkName: "ElTree" */ './views/ElTree.vue')
         }
     ]
 })
